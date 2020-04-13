@@ -2,13 +2,7 @@
   <div class="hello" style="padding-top:50px;">
    
    
-        <!-- <Input  search enter-button="Search" placeholder="Enter something..." /> -->
-        
-        <!-- <Card style="width:100%"> -->
-       <!--  <p slot="title">
-            <Icon type="ios-film-outline"></Icon>
-            信息
-        </p> -->
+      
        
        <Input  placeholder="邮箱 " v-model="email">
           <Icon type="md-mail" slot="prefix" />
@@ -20,9 +14,9 @@
         <div style="margin-bottom: 30px;"></div>
         <Button  @click="recharge" type='success' size='large' long>确认充值</Button>
 
+        <Table :columns="columns1" :data="data1"></Table>
 
 
-    <!-- </Card> -->
 
   </div>
 </template>
@@ -36,7 +30,62 @@ export default {
 
         email : '' ,//邮箱
         money : 10 //金额
+
+        ,columns1: [
+                    {
+                        title: 'email',
+                        key: 'email'
+                    },
+                    {
+                        title: 'amount',
+                        key: 'amount'
+                    },
+                    {
+                        title: 'time',
+                        key: 'time'
+                    }
+                ]
+
+        ,data1: [
+                    {
+                        email: 'John Brown',
+                        amount: 18,
+                        time: '2016-10-03'
+                    },
+                    {
+                        email: 'Jim Green',
+                        amount: 24,
+                        time: '2016-10-01'
+                    },
+                   
+                ]
+
+
+
     }   
+  },
+
+  created(){
+
+    //获取抠图行为数据
+    this.$axios.get( this.api+'/getKouTuBehavior' )
+    .then( res=>{
+        console.log( res );
+        if( 0 == res.data.status )
+        {
+          this.data1 = res.data.results;
+        }
+        else
+        {
+          console.log("获取失败");
+        }
+    } )
+    .catch( err=>{
+
+        console.log(error);
+
+    } );
+
   },
 
   methods:{
