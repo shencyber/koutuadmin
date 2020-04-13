@@ -26,7 +26,7 @@ export default {
   name: '',
   data () {
     return {
-        api : 'http://test.51koutu.com:4000' ,
+        api : 'http://test.51koutu.com:3000' ,
 
         email : '' ,//邮箱
         money : 10 //金额
