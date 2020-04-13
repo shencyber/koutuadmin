@@ -67,24 +67,7 @@ export default {
 
   created(){
 
-    //获取抠图行为数据
-    this.$axios.get( this.api+'/getKouTuBehavior' )
-    .then( res=>{
-        console.log( res );
-        if( 0 == res.data.status )
-        {
-          this.data1 = res.data.results;
-        }
-        else
-        {
-          console.log("获取失败");
-        }
-    } )
-    .catch( err=>{
-
-        console.log(error);
-
-    } );
+      this.getKouTuBehavior();
 
   },
 
@@ -119,6 +102,52 @@ export default {
       {
         this.$Message.info({content : '请输入正确的邮箱和金额'});
       }
+
+    }
+
+    //获取抠图行为数据
+    ,getKouTuBehavior(){
+
+          Date.prototype.Format = function (fmt) {
+              var o = {
+                  "M+": this.getMonth() + 1, //月份 
+                  "d+": this.getDate(), //日 
+                  "H+": this.getHours(), //小时 
+                  "m+": this.getMinutes(), //分 
+                  "s+": this.getSeconds(), //秒 
+                  "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+                  "S": this.getMilliseconds() //毫秒 
+              };
+              if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+              for (var k in o)
+              if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+              return fmt;
+          }
+          //获取抠图行为数据
+          this.$axios.get( this.api+'/getKouTuBehavior' )
+          .then( res=>{
+              console.log( res );
+              if( 0 == res.data.status )
+              {
+                this.data1 = res.data.results;
+                console.log('this.data1' , this.data1);
+                for(let i in this.data1)
+                {
+                  this.data1[i]['time'] = (new Date(this.data1[i]['time'])).Format( 'yyyy-MM-dd HH:mm:ss'  );
+                }
+                console.log( this.data1 );
+              }
+              else
+              {
+                console.log("获取失败");
+              }
+          } )
+          .catch( err=>{
+
+              console.log(err);
+
+          } );
+
 
     }
 
