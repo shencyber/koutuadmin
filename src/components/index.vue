@@ -18,17 +18,17 @@
         <Tabs value="name1">
             
             <!--使用记录统计-->
-            <TabPane label="标签一" name="name1">
+            <TabPane label="每日数据" name="name1">
                 <Table :columns="columns1" :data="data1"></Table>
             </TabPane>
             
             <!--用户总使用量统计-->
-            <TabPane label="标签二" name="name2">
+            <TabPane label="用户账户" name="name2">
               
                 <Table :columns="userInvokedColumn" :data="userInvoked"></Table>
 
             </TabPane>
-            <TabPane label="标签三" name="name3">
+            <TabPane label="邀请记录" name="name3">
               
                 <Table :columns="userInviteColumn" :data="userInvited"></Table>
 
