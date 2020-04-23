@@ -14,6 +14,15 @@
         <div style="margin-bottom: 30px;"></div>
         <Button  @click="recharge" type='success' size='large' long>确认充值</Button>
 
+
+        <!--数据统计部分-->
+        <Tabs value="name1">
+            <TabPane label="标签一" name="name1">标签一的内容</TabPane>
+            <TabPane label="标签二" name="name2">标签二的内容</TabPane>
+            <TabPane label="标签三" name="name3">标签三的内容</TabPane>
+        </Tabs>
+
+
         <Table :columns="columns1" :data="data1"></Table>
 
 
