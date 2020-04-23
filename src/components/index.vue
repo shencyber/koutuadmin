@@ -15,15 +15,28 @@
         <Button  @click="recharge" type='success' size='large' long>确认充值</Button>
 
 
-        <!--数据统计部分-->
+        <!--统计部分-->
         <Tabs value="name1">
-            <TabPane label="标签一" name="name1">标签一的内容</TabPane>
-            <TabPane label="标签二" name="name2">标签二的内容</TabPane>
-            <TabPane label="标签三" name="name3">标签三的内容</TabPane>
+            
+            <!--使用记录统计-->
+            <TabPane label="每日数据" name="name1">
+                <Table :columns="columns1" :data="data1"></Table>
+            </TabPane>
+            
+            <!--用户总使用量统计-->
+            <TabPane label="用户账户" name="name2">
+              
+                <Table :columns="userInvokedColumn" :data="userInvoked"></Table>
+
+            </TabPane>
+            <TabPane label="邀请记录" name="name3">
+              
+                <Table :columns="userInviteColumn" :data="userInvited"></Table>
+
+            </TabPane>
         </Tabs>
+        
 
-
-        <Table :columns="columns1" :data="data1"></Table>
 
 
 
@@ -55,19 +68,14 @@ export default {
                     }
                 ]
 
-        ,data1: [
-                    {
-                        email: 'John Brown',
-                        amount: 18,
-                        time: '2016-10-03'
-                    },
-                    {
-                        email: 'Jim Green',
-                        amount: 24,
-                        time: '2016-10-01'
-                    },
-                   
-                ]
+        ,data1: []
+
+        ,userInvokedColumn:[{title:'email' , key:'email'},{title:'使用总数',key:'invokedAmount'},{title:'总数',key:'totalAmount'}]
+        ,userInvoked:[]
+
+        //邀请统计
+        ,userInviteColumn:[{title:'email' , key:'email'},{title:'邀请总数',key:'total'}]
+        ,userInvited:[]
 
 
 
@@ -76,7 +84,9 @@ export default {
 
   created(){
 
-      this.getKouTuBehavior();
+      this.getKouTuBehavior(); //获取每天使用记录
+      this.getUserInvoked(); //获取用户使用次数
+      this.getUserInvite(); //获取用户邀请记录
 
   },
 
@@ -135,16 +145,16 @@ export default {
           //获取抠图行为数据
           this.$axios.get( this.api+'/getKouTuBehavior' )
           .then( res=>{
-              console.log( res );
+              // console.log( res );
               if( 0 == res.data.status )
               {
                 this.data1 = res.data.results;
-                console.log('this.data1' , this.data1);
+                // console.log('this.data1' , this.data1);
                 for(let i in this.data1)
                 {
                   this.data1[i]['time'] = (new Date(this.data1[i]['time'])).Format( 'yyyy-MM-dd HH:mm:ss'  );
                 }
-                console.log( this.data1 );
+                // console.log( this.data1 );
               }
               else
               {
@@ -156,6 +166,44 @@ export default {
               console.log(err);
 
           } );
+
+
+    }
+
+    //获取用户使用次数和总次数
+    ,getUserInvoked(){
+
+          this.$axios.get(this.api+'/getUserInvoked')
+          .then( res=>{
+            console.log('res',res);
+            if(  0 == res.data.status)
+            {
+              console.log( res.data.result );
+              this.userInvoked = res.data.result;
+            }
+          } )
+          .catch(err=>{
+            console.log( err );
+          });
+
+
+    }
+
+    //获取用户邀请数
+    ,getUserInvite(){
+
+          this.$axios.get(this.api+'/getUserInvite')
+          .then( res=>{
+            console.log('res',res);
+            if(  0 == res.data.status)
+            {
+              console.log( res.data.result );
+              this.userInvited = res.data.result;
+            }
+          } )
+          .catch(err=>{
+            console.log( err );
+          });
 
 
     }
