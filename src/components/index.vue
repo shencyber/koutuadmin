@@ -74,7 +74,7 @@ export default {
         ,userInvoked:[]
 
         //邀请统计
-        ,userInviteColumn:[{title:'email' , key:'email'},{title:'邀请总数',key:'total'}]
+        ,userInviteColumn:[{title:'email' , key:'email'},{title:'邀请总数',key:'total'},{title:'奖励金额',key:'award'},{title:'时间',key:'time'}]
         ,userInvited:[]
 
 
@@ -199,6 +199,10 @@ export default {
             {
               console.log( res.data.result );
               this.userInvited = res.data.result;
+              for( let i in this.userInvited )
+              {
+                this.userInvited[i]['time'] = (new Date( this.userInvited[i]['time'] )).Format( 'yyyy-MM-dd HH:mm:ss'  )
+              }
             }
           } )
           .catch(err=>{
